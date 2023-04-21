@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Ventana extends JFrame {
+public class Ventana extends JFrame{
     JButton[] botones;
 
     public Ventana() {
@@ -28,6 +30,18 @@ public class Ventana extends JFrame {
         marco.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         marco.setBackground(Color.decode("#0da192"));
         marco.add(panel, BorderLayout.CENTER);
+
+        JButton btnReiniciar = new JButton("Reiniciar");
+        btnReiniciar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Aquí puedes agregar la lógica para reiniciar el juego
+            }
+        });
+
+        JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelInferior.add(btnReiniciar);
+
+        marco.add(panelInferior, BorderLayout.SOUTH);
 
         this.add(marco, BorderLayout.CENTER);
 
