@@ -9,6 +9,7 @@ import java.util.List;
 public class Ventana extends JFrame{
     JButton[] botones;
     List<String> values = Arrays.asList("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"," ");
+    String[] ordenados = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"," "};
     int posicion;
 
     public Ventana() {
@@ -49,8 +50,10 @@ public class Ventana extends JFrame{
                     }
 
                     //POSICIONES VALIDAS DEL BOTON
+                    //**modulo comprueba en que columna está y si existe izq o der**
                     if (seleccionado == posicion - 4 || seleccionado == posicion + 4 ||
-                            (seleccionado == posicion - 1) || (seleccionado == posicion + 1)) {
+                            (posicion % 4 != 0 && seleccionado == posicion - 1) ||
+                            (posicion % 4 != 3 && seleccionado == posicion + 1)) {
 
                         //CAMBIAR TEXTO
                         String textoSeleccionado = botones[seleccionado].getText();
@@ -63,12 +66,26 @@ public class Ventana extends JFrame{
                         System.out.println(values);
                         posicion = seleccionado;
 
+                        //COMPARACION GANAR
+                        boolean ordenado = true;
 
+                        for (int i = 0; i < botones.length; i++) {
+                            if (!botones[i].getText().equals(ordenados[i])) {
+                                ordenado = false;
+                            }
+                        }
+
+                        //GANAR
+                        if (ordenado) {
+                            JOptionPane.showMessageDialog(null, "GANASTE");
+                            reiniciarTablero();
+                        }
                     }
                 }
             });
 
             panel.add(botones[i]);
+            botonEstilo(botones,i);
 
         }
 
@@ -78,10 +95,15 @@ public class Ventana extends JFrame{
         marco.add(panel, BorderLayout.CENTER);
 
         JButton btnReiniciar = new JButton("Reiniciar");
+        btnReiniciar.setFont(new Font("Arial", Font.BOLD, 20));
+        btnReiniciar.setPreferredSize(new Dimension(120, 40));
+        btnReiniciar.setBackground(Color.WHITE);
+        btnReiniciar.setForeground(Color.BLACK);
 
         btnReiniciar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                reiniciarTablero();
                 repaint();
                 revalidate();
             }
@@ -99,4 +121,23 @@ public class Ventana extends JFrame{
         this.revalidate();
     }
 
+    public void reiniciarTablero() {
+        Collections.shuffle(values);
+
+        for (int i = 0; i < values.size(); i++) {
+            botones[i].setText(values.get(i));
+
+            if (values.get(i).equals(" ")) {
+                posicion = i;
+            }
+        }
+    }
+
+    public void botonEstilo(JButton[] botones, int i) {
+
+        botones[i].setFont(new Font("Arial", Font.BOLD, 40));
+        botones[i].setBorder(null);
+        botones[i].setBackground(Color.WHITE);
+        botones[i].setForeground(Color.BLACK);
+    }
 }
